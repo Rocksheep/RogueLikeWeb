@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RockSheep's Roguelike</title>
+    <style>
+        body {
+            margin:0;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="canvas" width="800" height="600"></canvas>
+<script src="src/map/GameMap.js"></script>
+<script src="src/map/Rect.js"></script>
+<script src="src/map/Tile.js"></script>
+<script src="src/Player.js"></script>
+<script type="text/javascript">
+
+    window.addEventListener('load', init);
+
+    var mapWidth = 50;
+    var mapHeight = 35;
+
+    var squareSize = 16;
+    var gameMap;
+
+    var quit = false;
+
+    var player = new Player(0, 0);
+    var cursors;
+    var ctx;
+
+    var colors = {
+        darkWall: '#000064',
+        darkGround: '#323296',
+        lightWall: '#826e32',
+        lightGround: '#c8b432'
+    };
+
+    var dungeonTiles = {};
+//    var updateVision = true;
+
+    var canvas;
+    function init() {
+        canvas = document.getElementById('canvas');
+        ctx = canvas.getContext('2d');
+
+        gameMap = new GameMap(mapWidth, mapHeight, player);
+        gameMap.makeMap(20, 5, 10, player);
+
+        update();
+    }
+
+    function update() {
+        draw();
+
+        window.addEventListener('keydown', keyPresses);
+
+        if (!quit) {
+            setTimeout(update, 20);
+        }
+    }
+
+    function draw() {
+        clearScreen(ctx);
+        gameMap.draw(ctx, colors);
+        player.draw(ctx);
+    }
+
+    function clearScreen(ctx) {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0,0,800,600);
+    }
+
+    function keyPresses(e) {
+        var movement = {x:0,y:0};
+        switch (e.keyCode) {
+            case 38:
+                movement.y = -1;
+                break;
+            case 39:
+                movement.x = 1;
+                break;
+            case 40:
+                movement.y = 1;
+                break;
+            case 37:
+                movement.x = -1;
+                break;
+        }
+
+        var destinationX = player.x + movement.x;
+        var destinationY = player.y + movement.y;
+
+        if (!gameMap.isBlocked(destinationX, destinationY)) {
+            player.move(movement.x, movement.y);
+        }
+    }
+</script>
+</body>
+</html>
