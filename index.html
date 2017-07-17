@@ -26,9 +26,12 @@
     var squareSize = 16;
     var gameMap;
 
+    var entitySprite = new Image();
+    entitySprite.src='assets/img/entities.png';
+
     var quit = false;
 
-    var player = new Player(0, 0);
+    var player = new Player(0, 0, entitySprite);
     var cursors;
     var ctx;
 
@@ -47,7 +50,7 @@
         canvas = document.getElementById('canvas');
         ctx = canvas.getContext('2d');
 
-        gameMap = new GameMap(mapWidth, mapHeight, player);
+        gameMap = new GameMap(mapWidth, mapHeight, player, entitySprite);
         gameMap.makeMap(20, 5, 10, player);
 
         update();
