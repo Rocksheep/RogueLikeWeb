@@ -1,9 +1,15 @@
-var Tile = function(blocked, blockSight) {
-    this.blocked = blocked;
+class Tile {
 
-    if (blockSight === undefined) {
-        blockSight = blocked;
+    constructor(blocked, blockSight) {
+        this.blocked = blocked;
+
+        if (blockSight === undefined) {
+            blockSight = blocked;
+        }
+        this.blockSight = blockSight;
+        this.explored = false;
     }
-    this.blockSight = blockSight;
-    this.explored = false;
-};
+
+}
+
+export default Tile;
